@@ -22,9 +22,12 @@ router.get('/user/me', authenticateToken, getUserProfileConnect);
 router.get('/matching/suggestions', authenticateToken, getMatchingSuggestions);
 router.post('/matchings/:id/accept', accept)
 
+//abonnement et monetisation
+//router.post('/subscriptions/upgrade', authenticateToken, subscribe);
+
 // Administration 
 
 router.get('/admin/users', authenticateToken, getUsers);
-router.post('admin/metrics', getStat)
+router.get('/admin/metrics', getStat);
 
 export default router;

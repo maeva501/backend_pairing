@@ -13,3 +13,54 @@ datasource db {
   provider = "mongodb"
   url      = env("DATABASE_URL")
 }
+model User{
+  id             String   @id @default(auto()) @map("_id") @db.ObjectId
+  email          String   @unique
+  name           String?
+  password       String
+  otp            String?
+  otpExpiry      DateTime?
+  isVerified     Boolean @default(false)
+  role           String   @default("USER") // USER | PREMIUM | ADMIN | COMPANY
+  createdAt      DateTime @default(now())
+  profile        Profile?
+  subscriptions  Subscription[]
+  feedbacks      Feedback[]
+}
+model Profile{
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId      String   @unique @db.ObjectId
+  user        User     @relation(fields: [userId], references: [id])
+  name        String
+  bio         String?
+  skills      String[]
+  availability String
+  preferences Json?
+}
+model Matching{
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  userAId      String   @db.ObjectId
+  userBId      String   @db.ObjectId
+  score        Float
+  explanation  String?
+  status       String   @default("PENDING") // PENDING | ACCEPTED | REJECTED
+  createdAt    DateTime @default(now())
+}
+model Subscription{
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId      String   @db.ObjectId
+  user        User     @relation(fields: [userId], references: [id])
+  type        String   // FREE | PREMIUM | ENTERPRISE
+  status      String   @default("ACTIVE")
+  startedAt   DateTime @default(now())
+  expiresAt   DateTime
+}
+
+model Feedback{
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId      String   @db.ObjectId
+  user        User     @relation(fields: [userId], references: [id])
+  content     String
+  rating      Int      // 1 to 5
+  createdAt   DateTime @default(now())
+}
