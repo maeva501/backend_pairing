@@ -1,33 +1,19 @@
 import { Router } from 'express';
-import { register, login, logout, getProfile, verifyOTP, resendOTP , getMatchingSuggestions , getUserProfileConnect ,accept  , getUsers, getStat} from '../controllers/authController';
+import { register, login, logout, verifyOTP, resendOTP} from '../controllers/authController';
 import { authenticateToken } from '../middleware/authentication';
-
-const router = Router();
+import { getUserProfileConnect } from '../controllers/authController';
+const auth = Router();
 
 
 // Authentication routes
-router.post('/auth/register', register);
-router.post('/auth/login', login);
-router.post('/auth/verify-otp', verifyOTP);
-router.post('/auth/logout', logout);
-router.post('/auth/resend-otp', resendOTP);
-router.post('/auth/forgot-password', resendOTP);
-router.post('/auth/reset-password', resendOTP);
+auth.post('/register', register);
+auth.post('/login', login);
+auth.post('/verify-otp', verifyOTP);
+auth.post('/logout', logout);
+auth.post('/resend-otp', resendOTP);
+auth.post('/forgot-password', resendOTP);
+auth.post('/reset-password', resendOTP);
+auth.get('/me', authenticateToken, getUserProfileConnect);
 
-// gestion des profils
-router.get('/auth/profile/:id', authenticateToken, getProfile);
-router.get('/user/me', authenticateToken, getUserProfileConnect);
 
-// suggestions de profils
-router.get('/matching/suggestions', authenticateToken, getMatchingSuggestions);
-router.post('/matchings/:id/accept', accept)
-
-//abonnement et monetisation
-//router.post('/subscriptions/upgrade', authenticateToken, subscribe);
-
-// Administration 
-
-router.get('/admin/users', authenticateToken, getUsers);
-router.get('/admin/metrics', getStat);
-
-export default router;
+export default auth;

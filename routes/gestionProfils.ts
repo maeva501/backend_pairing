@@ -1,14 +1,12 @@
 import { Router } from 'express';
-import { getProfile, getUserProfileConnect} from '../controllers/authController';
+import { getProfile, getUserProfileConnect} from '../controllers/profileCtrl';
 import { authenticateToken } from '../middleware/authentication';
 
-const router = Router();
+const users = Router();
 
 
 
 // gestion des profils
-router.get('/auth/profile/:id', authenticateToken, getProfile);
-router.get('/user/me', authenticateToken, getUserProfileConnect);
+users.get('/profile/:id', authenticateToken, getProfile);
 
-
-export default router;
+export default users;

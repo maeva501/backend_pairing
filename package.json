@@ -2,8 +2,14 @@
   "name": "backend",
   "version": "1.0.0",
   "main": "index.js",
+  "type": "commonjs",
+
   "scripts": {
-    "dev": "nodemon index.ts"
+    "dev": "node build/index.js",
+    "start": "nodemon index.ts",
+    "generate": "npx prisma generate",
+    "build": "tsc",
+    "push": "npx prisma db push"
   },
   "keywords": [],
   "author": "",

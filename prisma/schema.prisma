@@ -24,7 +24,6 @@ model User{
   role           String   @default("USER") // USER | PREMIUM | ADMIN | COMPANY
   createdAt      DateTime @default(now())
   profile        Profile?
-  subscriptions  Subscription[]
   feedbacks      Feedback[]
 }
 model Profile{
@@ -45,15 +44,6 @@ model Matching{
   explanation  String?
   status       String   @default("PENDING") // PENDING | ACCEPTED | REJECTED
   createdAt    DateTime @default(now())
-}
-model Subscription{
-  id          String   @id @default(auto()) @map("_id") @db.ObjectId
-  userId      String   @db.ObjectId
-  user        User     @relation(fields: [userId], references: [id])
-  type        String   // FREE | PREMIUM | ENTERPRISE
-  status      String   @default("ACTIVE")
-  startedAt   DateTime @default(now())
-  expiresAt   DateTime
 }
 
 model Feedback{
